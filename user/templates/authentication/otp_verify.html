@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .otp-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f3f4f6;
+    padding: 20px;
+  }
+
+  .otp-box {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+  }
+
+  .otp-box h2 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 22px;
+    color: #333;
+  }
+
+  .otp-box p {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+  }
+
+  .otp-box input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+  }
+
+  .otp-box input[type="text"]:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
+  }
+
+  .otp-box button {
+    width: 100%;
+    padding: 12px;
+    background-color: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+  }
+
+  .otp-box button:hover {
+    background-color: #1e40af;
+  }
+
+  .otp-box .resend {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #666;
+  }
+
+  .otp-box .resend a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .otp-box .resend a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="otp-container">
+  <div class="otp-box">
+    <h2>Подтверждение кода</h2>
+    <p>Мы отправили 6-значный код на ваш email или номер телефона.</p>
+
+    <form method="POST">
+      {% csrf_token %}
+      <input
+        type="text"
+        name="otp"
+        maxlength="6"
+        pattern="[0-9]{6}"
+        required
+        placeholder="Введите код"
+      />
+      <button type="submit">Подтвердить</button>
+    </form>
+
+    <div class="resend">
+      Не получили код? <a href="#">Отправить повторно</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="about-section py-5" style="background: #f9f9f9;">
+  <div class="container">
+    <h1 class="mb-4 text-center" style="font-weight: 700; color: #222;">О нас</h1>
+    <p class="text-center mb-5" style="font-size: 1.1rem; color: #555; max-width: 700px; margin: 0 auto;">
+      Мы — команда профессионалов в сфере недвижимости, стремимся предоставить лучший сервис для наших клиентов.
+    </p>
+
+    <h2 class="mb-4 text-center" style="font-weight: 600; color: #444;">Наша команда</h2>
+    <div class="row justify-content-center g-4">
+      {% for member in team %}
+      <div class="col-md-4 col-sm-6">
+        <div class="card h-100 shadow-sm" style="border-radius: 12px; transition: transform 0.3s ease;">
+          {% if member.name == 'Аяна' %}
+            <img src="{% static 'assets/img/me.jpeg' %}" alt="{{ member.name }}"
+                 style="border-radius: 12px 12px 0 0; width: 100%; height: auto; max-height: 250px; object-fit: contain; background-color: #f0f0f0;">
+          {% elif member.name == 'Билал' %}
+            <img src="{% static 'assets/img/bilal.jpeg' %}" alt="{{ member.name }}"
+                 style="border-radius: 12px 12px 0 0; width: 100%; height: auto; max-height: 250px; object-fit: contain; background-color: #f0f0f0;">
+          {% elif member.name == 'Лейла' %}
+            <img src="{% static 'assets/img/leyla.jpeg' %}" alt="{{ member.name }}"
+                 style="border-radius: 12px 12px 0 0; width: 100%; height: auto; max-height: 250px; object-fit: contain; background-color: #f0f0f0;">
+          {% elif member.name == 'Ситора' %}
+            <img src="{% static 'assets/img/sss.jpeg' %}" alt="{{ member.name }}"
+                 style="border-radius: 12px 12px 0 0; width: 100%; height: auto; max-height: 250px; object-fit: contain; background-color: #f0f0f0;">
+          {% elif member.name == 'Байэль' %}
+            <img src="{% static 'assets/img/bael.jpeg' %}" alt="{{ member.name }}"
+                 style="border-radius: 12px 12px 0 0; width: 100%; height: auto; max-height: 250px; object-fit: contain; background-color: #f0f0f0;">
+          {% endif %}
+          <div class="card-body text-center">
+            <h5 class="card-title mb-2" style="font-weight: 700; color: #111;">{{ member.name }}</h5>
+            <h6 class="card-subtitle mb-3 text-secondary fst-italic">{{ member.role }}</h6>
+            <p class="card-text" style="color: #666; font-size: 0.95rem;">{{ member.description }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgb(0 0 0 / 0.15);
+  }
+</style>
+{% endblock %}

@@ -1,0 +1,10 @@
+<form method="post" action="{% url 'fav' estate.id %}" style="display:inline;">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-link p-0 border-0">
+    {% if user.is_authenticated and estate.favourite_set.filter(user=request.user).exists %}
+      <i class='bx bxs-heart text-danger'></i>
+    {% else %}
+      <i class='bx bx-heart text-dark'></i>
+    {% endif %}
+  </button>
+</form>

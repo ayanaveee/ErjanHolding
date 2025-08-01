@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="py-5" style="background-color: #f4f6fc;">
+    <div class="container">
+
+        <!-- Заголовок -->
+        <div class="mb-5 text-center">
+            <h2 class="fw-bold text-dark">
+                <i class='bx bx-user text-primary'></i> Профиль пользователя
+            </h2>
+            <p class="text-muted">Добро пожаловать в свой личный кабинет 🏠</p>
+        </div>
+
+        <!-- Контент в 2 колонки -->
+        <div class="row align-items-start">
+            <!-- Левая колонка: Аватар и имя -->
+            <div class="col-md-4 text-center mb-4">
+                {% if user.avatar %}
+                    <img src="{{ user.avatar.url }}" alt="Avatar" class="rounded-circle shadow mb-3" width="150" height="150">
+                {% else %}
+                    <img src="{% static 'assets/img/default-avatar.png' %}" alt="Default Avatar" class="rounded-circle shadow mb-3" width="150" height="150">
+                {% endif %}
+                <h4 class="text-dark fw-semibold">
+                    <i class='bx bx-user-circle text-primary'></i> {{ user.username }}
+                </h4>
+                <p class="text-muted"><i class='bx bx-envelope'></i> {{ user.email }}</p>
+                <span class="badge bg-primary px-3 py-2 text-light">
+                    <i class='bx bxs-user-badge'></i> {{ user.get_role_display }}
+                </span>
+            </div>
+
+            <!-- Правая колонка: Информация -->
+            <div class="col-md-8">
+                <div class="p-4 rounded-4" style="background-color: white; box-shadow: 0 0 20px rgba(0,0,0,0.05);">
+                    <h5 class="mb-4 text-dark"><i class='bx bx-info-circle'></i> Информация</h5>
+                    <div class="mb-3 d-flex justify-content-between">
+                        <span><i class='bx bx-wallet text-primary'></i> <strong>Баланс:</strong></span>
+                        <span>{{ user.balance }} сом</span>
+                    </div>
+                    <div class="mb-3 d-flex justify-content-between">
+                        <span><i class='bx bx-shield-quarter text-primary'></i> <strong>Роль:</strong></span>
+                        <span>{{ user.get_role_display }}</span>
+                    </div>
+                    <div class="mb-3 d-flex justify-content-between">
+                        <span><i class='bx bx-mail-send text-primary'></i> <strong>Email:</strong></span>
+                        <span>{{ user.email }}</span>
+                    </div>
+                    <div class="mt-4">
+                        <h6 class="text-dark mb-3">
+                            <i class='bx bx-lock-alt text-primary'></i> Двухфакторная аутентификация
+                        </h6>
+                        <form method="post" action=".">
+                            {% csrf_token %}
+                            <div class="form-check form-switch">
+                                <input type="checkbox" name="is_2fa_enabled" {% if user.is_2fa_enabled %}cheked{% endif %}>
+                                <label class="form-check-label" for="2fa-toggle">Включить двухфакторную защиту</label>
+                                <button class="btn btn-primary rounded-pill px-4 py-2 me-2" >Сохранить</button>
+                            </div>
+                        </form>
+                    <div class="ms-auto">
+                        <a href="{% url 'user_logout' %}" class="btn btn-outline-danger px-4 rounded-pill">
+                            <i class='bx bx-log-out'></i> Выйти
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

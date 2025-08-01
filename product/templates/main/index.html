@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="banner-wrapper bg-light">
+    <div id="index_banner" class="banner-vertical-center-index container-fluid pt-5">
+      <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel" style="max-width: 1140px; margin: 0 auto;">
+        <ol class="carousel-indicators mb-4">
+          <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active rounded-circle" style="width: 12px; height: 12px;"></li>
+          <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" class="rounded-circle" style="width: 12px; height: 12px;"></li>
+          <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" class="rounded-circle" style="width: 12px; height: 12px;"></li>
+        </ol>
+        <div class="carousel-inner rounded-4 shadow-lg overflow-hidden">
+          <div class="carousel-item active bg-white p-5">
+            <div class="py-5 row d-flex align-items-center">
+              <div class="banner-content col-lg-8 col-10 offset-1 offset-lg-2 text-start">
+                <h1 class="banner-heading h1 text-secondary display-3 mb-3 fw-bold" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                  🏠 Найди <strong>дом</strong> своей<br>мечты
+                </h1>
+                <p class="banner-body text-muted fs-5">
+                  Здесь вы найдете квартиру или дом на любой вкус и кошелек.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item bg-white p-5">
+            <div class="py-5 row d-flex align-items-center">
+              <div class="banner-content col-lg-8 col-10 offset-1 offset-lg-2 text-start">
+                <h1 class="banner-heading h1 text-secondary display-3 mb-3 fw-semibold" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                  📍 Твой уют — начинается здесь
+                </h1>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item bg-white p-5">
+            <div class="py-5 row d-flex align-items-center">
+              <div class="banner-content col-lg-8 col-10 offset-1 offset-lg-2 text-start">
+                <h1 class="banner-heading h1 text-secondary display-3 mb-3 fw-semibold" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                  🧘 Минимум стресса — максимум уюта
+                </h1>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a class="carousel-control-prev text-decoration-none" href="#carouselExampleIndicators" role="button" data-bs-slide="prev">
+          <i class='bx bx-chevron-left fs-1 text-primary'></i>
+          <span class="visually-hidden">Previous</span>
+        </a>
+        <a class="carousel-control-next text-decoration-none" href="#carouselExampleIndicators" role="button" data-bs-slide="next">
+          <i class='bx bx-chevron-right fs-1 text-primary'></i>
+          <span class="visually-hidden">Next</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <section class="service-wrapper py-5">
+    <div class="container pb-3">
+      <section class="services-section bg-white rounded-4 shadow-sm p-5">
+        <h2 class="text-center mb-5 fw-bold" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Наши услуги</h2>
+        <div class="row align-items-center">
+          <div class="col-auto text-end pe-4">
+            <i class='bx bx-gift h2 text-primary'></i>
+          </div>
+          <div class="col">
+            <p class="text-muted fs-5 lh-lg" style="line-height: 1.75;">
+              Наш сайт предоставляет удобную платформу для размещения объявлений о продаже и аренде квартир, домов и коммерческой недвижимости.
+              Вы можете легко найти подходящий объект по таким параметрам, как город, район, тип недвижимости, цена и площадь.
+              Мы предлагаем подробные описания и фотографии каждого объекта, а также прямую связь с продавцами и арендодателями через контактные данные.
+              Наша база объявлений регулярно обновляется, чтобы вы получали только актуальные предложения.
+              Кроме того, вы можете самостоятельно добавлять и управлять своими объявлениями через простой и понятный интерфейс.
+              Мы всегда готовы поддержать пользователей и помочь в размещении объявлений.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-5 mb-5">
+                <div class="container">
+                    <div class="recent-work-header row text-center pb-5">
+                        <h2 class="col-md-6 m-auto h2 semi-bold-600 py-5">Категории</h2>
+                    </div>
+                    <div class="row gy-5 g-lg-5 mb-4">
+                        <div class="d-flex overflow-auto gap-4 py-3">
+  {% for category in parent_categories %}
+    <div style="flex: 0 0 auto;">
+      <a href="{% url 'category_detail' category.id %}" class="recent-work card border-0 shadow-lg overflow-hidden"
+         style="height: 350px; width: 350px; transition: transform 0.3s ease;">
+        <img class="recent-work-img card-img fixed-img" src="{{ category.cover.url }}" alt="{{ category.title }}"
+             style="height: 100%; width: 100%; object-fit: cover;" loading="lazy">
+        <div class="recent-work-vertical card-img-overlay d-flex align-items-end">
+          <div class="recent-work-content text-start mb-3 ml-3 text-dark">
+            <h3 class="card-title light-300">{{ category.title }}</h3>
+          </div>
+        </div>
+      </a>
+    </div>
+  {% endfor %}
+</div>
+
+<style>
+
+  .recent-work.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+  }
+</style>
+
+
+
+        <h2 class="text-center mb-5 fw-bold" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Недвижимость</h2>
+        <div class="row gy-4 mt-4">
+          {% for estate in estates %}
+            <div class="col-md-4">
+              <a href="{% url 'detail' estate.id %}" class="text-decoration-none text-dark">
+                <div class="card h-100 shadow-sm rounded-4 overflow-hidden" style="transition: box-shadow 0.3s ease;">
+                  <img src="{{ estate.mail_cover.url }}" alt="{{ estate.title }}" loading="lazy" style="height: 200px; object-fit: cover; border-radius: 12px 12px 0 0;">
+                  <div class="card-body d-flex flex-column justify-content-between p-4">
+                    <div>
+                      <h5 class="card-title fw-semibold mb-2" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">{{ estate.title }}</h5>
+                      <p class="card-text text-muted" style="font-size: 0.95rem;">{{ estate.description|truncatechars:100 }}</p>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                      {% if estate.is_favourite %}
+                        <a href="{% url 'estate_like' estate.id %}" class="btn btn-sm btn-danger" style="font-weight: 600;">Убрать из избранного</a>
+                      {% else %}
+                        <a href="{% url 'estate_like' estate.id %}" class="btn btn-sm btn-outline-primary" style="font-weight: 600;">Добавить в избранное</a>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </section>
+    </div>
+  </section>
+{% endblock %}

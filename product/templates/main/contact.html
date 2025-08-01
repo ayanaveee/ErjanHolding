@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+    <h2 class="text-center mb-4">Свяжитесь с нами</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <form method="POST" novalidate>
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+                </div>
+                <div class="mb-3">
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                </div>
+                <div class="mb-3">
+                    {{ form.message.label_tag }}
+                    {{ form.message }}
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Отправить</button>
+            </form>
+        </div>
+
+       <div class="col-md-6">
+  <h5 class="mb-4 fw-bold text-primary">Контактная информация</h5>
+
+  <ul class="list-unstyled fs-5">
+    <li class="mb-3 d-flex align-items-center">
+      <span class="me-3 text-primary" style="font-size: 1.3rem;">📞</span>
+      <span>+996 555 123 456</span>
+    </li>
+    <li class="mb-3 d-flex align-items-center">
+      <span class="me-3 text-primary" style="font-size: 1.3rem;">✉️</span>
+      <span>info@erjan.kg</span>
+    </li>
+    <li class="mb-3 d-flex align-items-center">
+      <span class="me-3 text-primary" style="font-size: 1.3rem;">📍</span>
+      <span>г. Бишкек, ул. Главная, 12</span>
+    </li>
+  </ul>
+</div>
+
+    </div>
+</div>
+{% endblock %}

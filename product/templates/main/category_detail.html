@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="container py-5">
+    <h2 class="mb-4">{{ category.title }}</h2>
+
+    {% if subcategories %}
+      <div class="row">
+        {% for sub in subcategories %}
+          <div class="col-md-4 mb-3">
+            <a href="{% url 'category_detail' sub.id %}" class="recent-work card border-0 shadow-lg overflow-hidden" style="height: 300px; width: 100%;">
+              {% if sub.cover %}
+                <img class="recent-work-img card-img fixed-img" src="{{ sub.cover.url }}" alt="{{ sub.title }}" style="height: 100%; width: 100%; object-fit: cover;">
+              {% else %}
+                <div style="height: 300px; background-color: #ddd; display:flex; align-items:center; justify-content:center;">
+                  <span>Нет изображения</span>
+                </div>
+              {% endif %}
+              <div class="recent-work-vertical card-img-overlay d-flex align-items-end">
+                <div class="recent-work-content text-start mb-3 ms-3 text-dark">
+                  <h3 class="card-title light-300">{{ sub.title }}</h3>
+                </div>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if estates %}
+      <div class="row mt-5">
+        {% for estate in estates %}
+          <div class="col-xl-3 col-md-4 col-sm-6 project
+             {% if 'аренда' in estate.category.title|lower %}
+                  rent
+             {% elif 'продажа' in estate.category.title|lower %}
+                  sale
+             {% endif %}
+             {% if estate.is_popular %}
+                  popular
+             {% endif %}
+             {% if estate.is_new %}
+                  new
+             {% endif %}
+          ">
+            <a href="{% url 'detail' estate.id %}" class="service-work card border-0 text-white shadow-sm overflow-hidden mx-3 m-sm-0">
+              {% if estate.mail_cover %}
+                <img class="card-img" src="{{ estate.mail_cover.url }}" alt="{{ estate.title }}" style="height: 350px; object-fit: cover;">
+              {% else %}
+                <div style="height: 200px; background-color: #ccc; display:flex; align-items:center; justify-content:center;">
+                  <span>Изображение отсутствует</span>
+                </div>
+              {% endif %}
+              <div class="service-work-vertical card-img-overlay d-flex align-items-end">
+                <div class="service-work-content text-left text-light">
+                  <span class="btn btn-outline-light rounded-pill mb-lg-3 px-lg-4 light-300">
+                    {{ estate.category.title }}
+                  </span>
+                  <p class="card-text">{{ estate.title }} — <strong>{{ estate.price }} $</strong></p>
+                </div>
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

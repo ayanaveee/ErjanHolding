@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block content %}
+
+<!-- Banner -->
+<div class="bg-light py-5 text-center border-bottom">
+    <h1 class="display-5 fw-bold">{{ product.title }}</h1>
+    <p class="text-muted fs-5">{{ product.category }}</p>
+</div>
+
+<!-- Main Section -->
+<section class="container py-5">
+
+    <!-- Image + Thumbnails -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-8 text-center">
+            <img class="img-fluid border rounded-4 shadow-sm mb-4"
+                 style="height: 600px; width: 100%; object-fit: cover;"
+                 src="{{ estate.mail_cover.url }}" alt="Основное изображение">
+
+            {% if images %}
+                <div class="d-flex flex-wrap justify-content-center gap-2">
+                    {% for img in images %}
+                        <a href="{{ img.file.url }}" target="_blank">
+                            <img src="{{ img.file.url }}" class="rounded shadow-sm"
+                                 style="width: 100px; height: 100px; object-fit: cover;" alt="Превью">
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Info Block -->
+<style>
+    .row h3 {
+        font-size: 2rem;
+    }
+    .list-group-item {
+        font-size: 1.25rem;
+    }
+</style>
+
+<div class="row justify-content-center mb-5">
+    <div class="col-lg-8">
+        <h3 class="fw-bold mb-4">Информация</h3>
+        <ul class="list-group list-group-flush shadow-sm rounded-4 overflow-hidden">
+            <li class="list-group-item"><strong>Категория:</strong> {{ estate.category }}</li>
+            <li class="list-group-item"><strong>Площадь:</strong> {{ estate.area }} кв.м</li>
+            <li class="list-group-item"><strong>Город:</strong> {{ estate.city }}</li>
+            <li class="list-group-item"><strong>Район:</strong> {{ estate.district }}</li>
+            <li class="list-group-item"><strong>Комнат:</strong> {{ estate.rooms }}</li>
+            <li class="list-group-item"><strong>Цена:</strong> {{ estate.price }} $</li>
+            <li class="list-group-item"><strong>Описание:</strong> {{ estate.description }}</li>
+            <li class="list-group-item"><strong>Геолокация:</strong> {{ estate.geo }}</li>
+
+            {% if product|is_instance:"ApartmentSale" %}
+                <li class="list-group-item"><strong>Этаж:</strong> {{ estate.floor }}</li>
+                <li class="list-group-item"><strong>Этажей в доме:</strong> {{ estate.total_floors }}</li>
+            {% elif product|is_instance:"ApartmentRent" %}
+                <li class="list-group-item"><strong>Срок аренды:</strong> {{ estate.rental_period }}</li>
+            {% elif product|is_instance:"HouseSale" %}
+                <li class="list-group-item"><strong>Площадь участка:</strong> {{ estate.plot_size }} соток</li>
+                <li class="list-group-item"><strong>Этажей:</strong> {{ estate.floors }}</li>
+                <li class="list-group-item"><strong>Гараж:</strong> {{ estate.garage|yesno:"Есть,Нет" }}</li>
+            {% elif product|is_instance:"CommercialProperties" %}
+                <li class="list-group-item"><strong>Оборудование:</strong> {{ estate.equipment }}</li>
+                <li class="list-group-item"><strong>Коммуникации:</strong> {{ estate.utilities }}</li>
+            {% elif product|is_instance:"Garage" %}
+                <li class="list-group-item"><strong>Материал постройки:</strong> {{ estate.building_material }}</li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+
+</section>
+
+<!-- Feedback Section -->
+<section class="container py-5">
+    <h3 class="mb-5 text-center text-primary fw-bold border-bottom pb-2" style="max-width: 240px; margin: 0 auto;">
+        Отзывы
+    </h3>
+
+    {% for feedback in feedbacks %}
+        <div class="card shadow-sm mb-4 border-0 rounded-4 px-3 py-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h6 class="fw-bold mb-1">{{ feedback.user.username }}</h6>
+                        <small class="text-muted">{{ feedback.created_at|date:"d.m.Y H:i" }}</small>
+                    </div>
+                    {% if user.is_authenticated and user == feedback.user or user.is_superuser %}
+                        <form method="post" action="{% url 'delete_feedback' feedback.id %}" class="ms-2">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Удалить</button>
+                        </form>
+                    {% endif %}
+                </div>
+
+                <div class="bg-light rounded-3 p-3 my-3">
+                    {{ feedback.comment }}
+                </div>
+
+                {% if feedback.responses.all %}
+                    <div class="mt-3 ms-3">
+                        {% for response in feedback.responses.all %}
+                            <div class="d-flex justify-content-between bg-white border rounded-3 p-3 mb-2 shadow-sm">
+                                <div>
+                                    <small class="fw-semibold text-primary">{{ response.user.username }}</small><br>
+                                    <span>{{ response.comment }}</span>
+                                </div>
+                                {% if user.is_authenticated and user == response.user or user.is_superuser %}
+                                    <form method="post" action="{% url 'delete_response' response.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-sm btn-outline-danger ms-3">Удалить</button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                    <form method="post" class="mt-4">
+                        {% csrf_token %}
+                        <input type="hidden" name="feedback_id" value="{{ feedback.id }}">
+                        <label class="form-label fw-semibold">Ваш ответ</label>
+                        {{ response_form.comment }}
+                        <button type="submit" name="response_submit" class="btn btn-sm btn-primary mt-2 px-4">Ответить</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    {% empty %}
+        <p class="text-center text-muted fs-5 my-5">Пока что отзывов нет.</p>
+    {% endfor %}
+
+    {% if user.is_authenticated %}
+        <div class="mt-5 mx-auto" style="max-width: 600px;">
+            <h4 class="mb-4 text-center fw-bold">Оставить отзыв</h4>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" name="feedback_submit" class="btn btn-primary w-100 py-2 fw-bold">Отправить</button>
+            </form>
+        </div>
+    {% else %}
+        <p class="text-center mt-5">
+            Пожалуйста, <a href="{% url 'user_login' %}">войдите</a>, чтобы оставить отзыв.
+        </p>
+    {% endif %}
+</section>
+
+<!-- Related Listings -->
+<section class="bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Похожие объявления</h2>
+        <div class="row justify-content-center g-4">
+            {% for related in related_estates %}
+                <div class="col-md-6 col-lg-4">
+                    <a href="{% url 'detail' related.pk %}" class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden text-decoration-none related-hover">
+                        <div class="ratio ratio-4x3">
+                            {% if related.mail_cover %}
+                                <img src="{{ related.mail_cover.url }}" class="card-img-top object-fit-cover" alt="{{ related.title }}">
+                            {% else %}
+                                <img src="{% static 'assets/img/placeholder.jpg' %}" class="card-img-top object-fit-cover" alt="Нет изображения">
+                            {% endif %}
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title text-dark mb-2">{{ related.title }}</h5>
+                            <p class="card-text text-muted mb-2">{{ related.description|truncatewords:15 }}</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <small class="text-muted">{{ related.city }}, {{ related.district }}</small>
+                                <span class="text-success fw-bold">{{ related.price }} сом</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% empty %}
+                <p class="text-center">Нет похожих объявлений.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<style>
+.related-hover {
+    transition: all 0.3s ease-in-out;
+}
+.related-hover:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+}
+</style>
+
+{% endblock %}

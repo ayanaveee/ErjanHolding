@@ -1,0 +1,231 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+  .navbar-brand {
+    font-weight: 700;
+    color: #0d6efd !important;
+  }
+
+  .navbar-brand:hover {
+    color: #084298 !important;
+  }
+
+  .nav-link.nav-button {
+    font-weight: 600;
+    color: #212529;
+    transition: color 0.3s ease;
+  }
+  .nav-link.nav-button:hover,
+  .nav-link.nav-button.active {
+    color: #0d6efd;
+  }
+
+  /* Дропдаун юзера */
+  .dropdown-menu {
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  .dropdown-menu a.dropdown-item:hover {
+    background-color: #0d6efd;
+    color: #fff !important;
+  }
+
+  /* Футер */
+  footer h4 {
+    font-weight: 700;
+    color: #e0e0e0;
+    margin-bottom: 1rem;
+  }
+
+  footer p {
+    color: #cfcfcf;
+    font-weight: 400;
+  }
+
+  footer a.text-light {
+    font-weight: 600;
+    transition: color 0.3s ease;
+  }
+  footer a.text-light:hover {
+    color: #0d6efd;
+    text-decoration: underline;
+  }
+
+  .footer-icons li a {
+    color: #cfcfcf;
+    transition: color 0.3s ease;
+  }
+  .footer-icons li a:hover {
+    color: #0d6efd;
+  }
+
+  footer .text-center.text-light {
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  .navbar-brand {
+    padding-top: .3125rem;
+    padding-bottom: .3125rem;
+    margin-right: 1rem;
+    font-size: 1.25rem;
+}
+</style>
+
+    <title>ErjanHolding</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="{% static 'assets/img/apple-icon.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.ico' %}">
+
+    <!-- CSS -->
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="{% static 'assets/css/templatemo.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/custom.css' %}" rel="stylesheet">
+</head>
+<body>
+
+<!-- Header -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow">
+    <div class="container d-flex justify-content-between align-items-center">
+        <a class="navbar-brand h1" href="{% url 'index' %}">
+            <i class='bx bx-buildings bx-sm text-dark'></i>
+            <span class="text-dark h4">Erjan</span> <span class="text-primary h4">Holding</span>
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav" style="background-color: white; min-height: 70px;">
+            <ul class="navbar-nav mx-auto align-items-center gap-3" style="height: 100%;">
+                <li class="nav-item">
+                    <a class="nav-link nav-button" href="{% url 'index' %}">Главная</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-button" href="{% url 'estate_list' %}">Все объекты</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-button" href="{% url 'contact' %}">Наши контакты</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-button" href="{% url 'favourite_list' %}">Избранное</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link nav-button" href="{% url 'about' %}">О нас</a>
+                </li>
+            </ul>
+
+            <div class="nav-item dropdown ms-auto d-flex align-items-center" style="height: 100%; position: relative;">
+                <a class="nav-link dropdown-toggle d-flex align-items-center text-primary" href="#" id="userDropdown"
+                   role="button" data-bs-toggle="dropdown" aria-expanded="false" style="height: 40px;">
+                    <i class='bx bx-user-circle bx-sm'></i>
+                </a>
+                <ul class="dropdown-menu p-3" aria-labelledby="userDropdown"
+                    style="min-width: 220px; border-radius: 8px; position: absolute; left: auto; right: 0;">
+                    {% if not request.user.is_authenticated %}
+                        <li><a class="dropdown-item" href="{% url 'user_login' %}">Вход</a></li>
+                        <li><a class="dropdown-item" href="{% url 'user_register' %}">Регистрация</a></li>
+                    {% else %}
+                        <li>
+                            <div class="mb-2">
+                                <strong>{{ request.user.get_full_name }}</strong><br>
+                                <small class="text-muted">{{ request.user.email }}</small>
+                            </div>
+                        </li>
+                        <li><a class="dropdown-item" href="{% url 'user_logout' %}">Выход</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+{% block content %}
+{% endblock %}
+
+<!-- Footer -->
+<footer class="bg-secondary pt-4">
+    <div class="container">
+        <div class="row py-4">
+
+            <div class="col-lg-3 col-12 align-left">
+                <a class="navbar-brand" href="{% url 'index' %}">
+                    <i class='bx bx-buildings bx-sm text-light'></i>
+                    <span class="text-light h5">Erjan</span> <span class="text-light h5 semi-bold-600">Holding</span>
+                </a>
+                <p class="text-light my-lg-4 my-2">ErjanHolding — жильё с характером.</p>
+                <ul class="list-inline footer-icons light-300">
+                    <li class="list-inline-item"><a class="text-light" href="#"><i class='bx bxl-facebook-square bx-md'></i></a></li>
+                    <li class="list-inline-item"><a class="text-light" href="#"><i class='bx bxl-linkedin-square bx-md'></i></a></li>
+                    <li class="list-inline-item"><a class="text-light" href="#"><i class='bx bxl-whatsapp-square bx-md'></i></a></li>
+                    <li class="list-inline-item"><a class="text-light" href="#"><i class='bx bxl-flickr-square bx-md'></i></a></li>
+                    <li class="list-inline-item"><a class="text-light" href="#"><i class='bx bxl-medium-square bx-md'></i></a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-4 mt-4">
+                <h4 class="text-light light-300">Наша компания</h4>
+                <ul class="list-unstyled text-light light-300">
+                    <li><a class="text-decoration-none text-light" href="{% url 'index' %}">Главная</a></li>
+                    <li><a class="text-decoration-none text-light" href="{% url 'about' %}">О нас</a></li>
+                    <li><a class="text-decoration-none text-light" href="#">Категории</a></li>
+                    <li><a class="text-decoration-none text-light" href="#">Цены</a></li>
+                    <li><a class="text-decoration-none text-light" href="{% url 'contact' %}">Контакты</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-3 col-md-4 mt-4">
+                <h4 class="text-light light-300">Для клиентов</h4>
+                <ul class="list-unstyled text-light light-300">
+                    <li><a class="text-decoration-none text-light" href="tel:+996555123456"><i class='bx bx-phone'></i> +996 555 123 456</a></li>
+                    <li><a class="text-decoration-none text-light" href="mailto:info@erjan.kg"><i class='bx bx-mail-send'></i> info@erjan.kg</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="w-100 bg-primary py-3">
+        <div class="container">
+            <div class="row pt-2">
+                <div class="col text-center text-light">
+                    © 2025 ErjanHolding. Все права защищены.
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/isotope.pkgd.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        var $grid = $('.projects').isotope({
+            itemSelector: '.project',
+            layoutMode: 'fitRows'
+        });
+
+        $('.filter-btn').on('click', function () {
+            var filterValue = $(this).attr('data-filter');
+            $grid.isotope({filter: filterValue});
+            $('.filter-btn').removeClass('active');
+            $(this).addClass('active');
+        });
+    });
+</script>
+
+</body>
+</html>
